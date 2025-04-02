@@ -1,0 +1,9 @@
+xarray
+rioxarray
+numpy
+matplotlib
+s3fs
+h5netcdf
+h5py
+datetime
+cartopy
