@@ -1,0 +1,34 @@
+name: Process Jupyter Hub Access Requests
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  process_request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Extract Issue Data
+        id: extract
+        run: |
+          ISSUE_BODY="${{ github.event.issue.body }}"
+          NAME=$(echo "$ISSUE_BODY" | grep -oP '(?<=\*\*Full Name\*\*\s*).*')
+          EMAIL=$(echo "$ISSUE_BODY" | grep -oP '(?<=\*\*Email ID\*\*\s*).*')
+          USE_CASE=$(echo "$ISSUE_BODY" | grep -oP '(?<=\*\*Use Case\*\*\s*).*')
+
+          echo "NAME=$NAME" >> $GITHUB_ENV
+          echo "EMAIL=$EMAIL" >> $GITHUB_ENV
+          echo "USE_CASE=$USE_CASE" >> $GITHUB_ENV
+
+      - name: Store Request (Example)
+        run: |
+          echo "Name: $NAME"
+          echo "Email: $EMAIL"
+          echo "Use Case: $USE_CASE"
+          # You can replace this with sending data to an S3 bucket, database, or notifying via Slack.
+
+      - name: Comment on Issue
+        run: |
+          curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" \
+            -H "Accept: application/vnd.github.v3+json" \
+            https://api.github.com/repos/${{ github.repository }}/issues/${{ github.event.issue.number }}/comments \
+            -d '{"body": "Thank you for your request! Our team will review it and provide access soon."}'
