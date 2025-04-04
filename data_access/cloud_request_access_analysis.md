@@ -1,6 +1,6 @@
-# How to Request Login Access to WaterInsight Open Science Studio (Jupyter Hub)
+# How to Request Login Access to NASA Water Insight Open Science Studio (Jupyter Hub)
 
-## 1. Install AWS CLI  
+## 1. Request Access  
 Email David Mocko (david.mocko@nasa.gov) or Sid Chaudhary (siddharth.chaudhary@nasa.gov) 
 
 Fill out the following Google form on your use case: [NLDAS-3 Data Testing Request Form](https://docs.google.com/forms/d/e/1FAIpQLScCCr5yxm0K8JsB8tnUwiRhxOCDXoeSry9hWqe0nYZYIzSv1g/viewform). 
@@ -8,7 +8,7 @@ Fill out the following Google form on your use case: [NLDAS-3 Data Testing Reque
 You should hear back in a week about account access.
 
 ## 2. Login to the Jupyter Hub
-Login to the WaterInsight Open Science Studio (Jupyter Hub): https://oss.waterinsight.smce.nasa.gov/
+Login to the NASA Water Insight Open Science Studio (Jupyter Hub): https://oss.waterinsight.smce.nasa.gov/
 
 ![image](https://github.com/user-attachments/assets/badc39a1-aaa8-4ed8-a23b-8531ec9f0367)
 
