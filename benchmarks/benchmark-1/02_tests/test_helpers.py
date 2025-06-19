@@ -34,7 +34,7 @@ def timeout(seconds):
 
 def list_test_files(
     s3fsfs: s3fs.S3FileSystem,
-    bucket: str = 'nasa-veda-scratch',
+    bucket: str = 'nasa-eodc-public',
     directory: str = 'NLDAS/netcdf/test_files',
     file_pattern: str = '*_Tair.nc',
 ) -> list[str]:
