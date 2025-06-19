@@ -1,4 +1,4 @@
-# North American Land Data Assimilation System (NLDAS) Benchmarking Report
+# North American Land Data Assimilation System (NLDAS) Benchmarking Interim Report
 
 ## Goal
 
