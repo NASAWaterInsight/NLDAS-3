@@ -34,8 +34,8 @@ def timeout(seconds):
 
 def list_test_files(
     s3fsfs: s3fs.S3FileSystem,
-    bucket: str = 'nasa-eodc-public',
-    directory: str = 'NLDAS/netcdf/test_files',
+    bucket: str = 'nasa-waterinsight',
+    directory: str = 'NLDAS3/forcing/rechunked_test/single_variable',
     file_pattern: str = '*_Tair.nc',
 ) -> list[str]:
     test_files = s3fsfs.glob(f's3://{bucket}/{directory}/{file_pattern}')

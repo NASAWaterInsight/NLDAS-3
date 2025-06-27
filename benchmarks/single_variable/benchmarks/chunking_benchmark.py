@@ -198,7 +198,7 @@ def main():
         datasets[name] = create_test_dataset(target_chunk_size_mb=size)
     
     # Upload to S3
-    bucket = 'nasa-eodc-public'
+    bucket = 'nasa-waterinsight'
     s3_paths = {}
     for name, ds in datasets.items():
         s3_path = f's3://{bucket}/NLDAS/netcdf/chunking_test/{name}_chunks.nc'
