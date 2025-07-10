@@ -12,7 +12,7 @@ Documentation and discussion on NLDAS (North American Land Data Assimilation Sys
 
 ![Various options to access data](nldas_data_access.png)
 
-You can access NLDAS-3 data using the following methods:
+You can access NLDAS-3 meteorological model input (forcing) data data using the following methods:
 
 1. **Download data locally**  
    Follow the instructions in [this guide](data_access/1-download_from_aws.md) to download data to your local machine using AWS CLI.
