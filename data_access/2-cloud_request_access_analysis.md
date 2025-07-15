@@ -34,8 +34,8 @@ Click _hub control panel_ under File (naviagtion bar) and then stop server
 
 ![image](https://github.com/user-attachments/assets/5f7883a4-db3f-4c27-b690-d77f2a5fc21b)
 
-# NLDAS-3 Forcing Data Feedback Form
-This is a testing and feedback form for the NASA NLDAS-3 forcing data that will be conducted from Spring to early Fall 2025. This evaluation should take about 5-10 minutes.
+# NLDAS-3 Meteorological Model Input (Forcing) Data Feedback Form
+This is a testing and feedback form for the NASA NLDAS-3 meteorological model input (forcing) data that will be conducted from Spring to early Fall 2025. This evaluation should take about 5-10 minutes.
 
 [Feedback Form](https://docs.google.com/forms/d/e/1FAIpQLScL_LNT-YtKjQWiXqNOLak4JFxd5ETWvA3P7KzxK_WSE1swGg/viewform)
 
