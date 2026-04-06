@@ -8,30 +8,30 @@ the [user feedback form][2].
 
 ### Current Issues
 
-**Spatial Distribution of Precip**
+**Spatial Distribution of Precipitation**
 
 Although evaluations of precipitation against observations from
 gauges show very good performance from NLDAS-3, we are investigating
 ways to improve fine-scale details of the downscaled precipitation.
-We have also noticed (and are working on correcting)
-higher-than-expected precipitation values right along coastlines.
+The "beta" version of the forcing has higher-than-expected
+precipitation values right along coastlines. The final version of
+the forcing (which will be available soon) corrects this issue.
 
 **Atmospheric Variable Discontinuities**
 
-The fields of surface temperature/moisture/pressure and of LWdown at
-the surface may show unrealistic discontinuities, especially just
-inland of coastlines, due to the lapse-rate corrections.  We are
-working to resolve these discontinuities.
+The "beta" version of the forcing shows unrealistic discontinuities
+in the fields of surface temperature/moisture/pressure and of LWdown
+at the surface especially just inland of coastlines, due to the
+lapse-rate corrections. The final version of the forcing corrects
+this issue.
 
 **Negative Downward Shortwave**
 
-Some grid points have negative SWdown values for a few hours during
-the day in data from January 2019 and later.  These negative values
-can just be considered to be zero.  However, we plan to set these
-values to zero in the next version of the forcing.  Note that the
-daily- and monthly-averaged forcing files currently do include these
-negative values in the averages; the next version of these products
-will also be corrected.
+The "beta" version of the forcing has a few grid points for a few
+hours during the day with negative SWdown values (especially January
+2019 and later). The "beta" daily- and monthly-averaged forcing files
+include these negative values in the averages. The final version of
+the forcing corrects this issue.
 
 ### Issues in Old Data Versions
 

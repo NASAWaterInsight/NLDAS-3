@@ -9,18 +9,45 @@ upon previous versions by:
 
 - Improving the spatial resolution to 1-km.
 - Expanding the spatial domain to all of North and Central America.
-- Reducing forecast latency.
+- Reducing latency.
 - Upgrading land surface model processes and parameterization.
 - Assimilating a variety of remote sensing data in near real-time.
 
-At this time, only the forcing data from 2001 to 2023 is publicly
-available on AWS. The model outputs are in the final stage of
-processing, and are expected to be released mid-2026.
+At this time, only the **beta** forcing data from 2001 to 2023 is
+publicly available on AWS. The model outputs for initial runs are in
+the final stage of processing, and are expected to be released
+mid-2026.
 
 Given that the data is in a beta stage of development, there are
-several known issues [tracked in this document][8]. We are eager
-to learn about any other problems encountered by our users, so please
-let us know if you discover anything using the contact methods below.
+several known issues [tracked in this document][8], and data are
+likely to undergo substantial changes before the final release.
+
+We are eager to learn about any other problems encountered by our
+users, so please let us know if you discover anything using the
+contact methods below.
+
+## Open Science Studio
+
+We are offering free access to cloud resources through the Open
+Science Studio (JupyterHub) environment provided by NASA's Science
+Managed Cloud Environment (SMCE).
+
+Users are provisioned an on-demand AWS EC2 instance with up to 16 GB
+of memory, 10 GB private storage (expandable on an individual basis),
+and 4 dedicated processor cores in the `us-west-2` region. Instances
+are equipped with a default python environment suitable for
+interacting with the NLDAS-3 S3 bucket, and access to shared
+Elastic File System (EFS) storage.
+
+This capability is currently under development, and has limitations
+including inefficiency for large data egress, and a lack of CPU
+persistence when a user is offline. Nonetheless, it offers a way to
+quickly interact with and visualize the data, and to collaborate
+with other users.
+
+For access to Open Science Studio cloud resources for testing the
+data, please fill out the [NLDAS-3 Data Testing Request Form][2],
+and we will reach out to you with more information.
 
 ## Data Description
 
@@ -39,7 +66,7 @@ With the exception of precipitation, all of the data variables
 represent the mean value within the UTC time period they represent.
 Precipitation, however, provides the total accumulation over the
 relevant UTC time period. Daily data also includes the minimum and
-maximum values of each data variable for that day.
+maximum values 2-meter temperature for that day.
 
 In order to support efficient access for multiple use cases, forcing
 data are chunked into memory-adjacent blocks with shape
@@ -66,11 +93,30 @@ integer dates.
 In case you are a GrADS user, the AWS bucket endpoints also contain
 .xdf template files so that you can use `xdfopen`.
 
-Static parameter data is also available in the s3 bucket under
+Simple static parameter data is also available in the s3 bucket under
+`s3://nasa-waterinsight/NLDAS3/static/NLDAS-3_dominant-soil-vegetation.nc`,
+which contains integer classes for soil texture and surface type
+alongside the latitude and longitude coordinates over the full
+domain.
+
+Static data that has been tiled for routing is accessible at
 `s3://nasa-waterinsight/NLDAS3/static/lis_input.nldas3.noahmp401.1km.hymap.nc`,
 which contains land mask, surface class, soil texture, surface
 geometry, catchment ID, and other time-invariant parameters relevant
 for land surface and routing model calculations.
+
+### Multi-file Virtual Zarr Access
+
+In order to more easily index across files and to minimize the total
+number of requests needed to retrieve data, we provide a virtual
+[Icechunk repo][13] for daily data (and hourly data soon).
+
+This is the access method we recommend for any use case that utilizes
+more than a few files. It enables you to treat the entire period of
+record as a single xarray Dataset object without actually downloading
+any data until you specify a subset and explicitly call `.load()`.
+
+Refer to [this notebook][14] for a demonstration.
 
 ### Access File Subset (s3fs)
 
@@ -113,11 +159,6 @@ follows:
 
 ## Contact
 
-For access to free Open Science Studio (JupyterHub) cloud resources
-for testing the data, please fill out the
-[NLDAS-3 Data Testing Request Form][2], and we will reach out to you
-with more information.
-
 We sincerely appreciate all user feedback; if you would like to share
 your use cases and ideas for the future of this product, please fill
 out the [user feedback form][3].
@@ -142,3 +183,5 @@ out the [user feedback form][3].
 [10]:https://docs.unidata.ucar.edu/netcdf-c/4.9.2/netcdf_byterange.html
 [11]:user_data_notebooks/1-read_aws_data.ipynb
 [12]:https://github.com/s3fs-fuse/s3fs-fuse
+[13]:https://icechunk.io/en/latest/concepts/
+[14]:user_data_notebooks/basic_s3fs_subgrid_plot.ipynb
