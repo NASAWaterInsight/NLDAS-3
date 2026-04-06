@@ -145,10 +145,17 @@ be listed.
 
 `aws s3 ls --human-readable s3://nasa-waterinsight/NLDAS3/forcing/daily/ --no-sign-request`
 
-After you choose an available file, download it with the CLI as
-follows:
+Note that the AWS CLI is sensitive to the trailing forward slash in
+the bucket key path. Without it, only the "directory" key will be
+listed, not the files contained within it.
+
+After you choose an available file or range of files, download them
+with the CLI as follows:
 
 `aws s3 cp s3://nasa-waterinsight/NLDAS3/forcing/daily/201007/NLDAS_FOR0010_H.A20100722.030.beta.nc . --no-sign-request`
+
+The `--recursive` flag will enable you to download all files under a
+particular "directory" within the s3 bucket.
 
 ## More Resources
 
@@ -184,4 +191,4 @@ out the [user feedback form][3].
 [11]:user_data_notebooks/1-read_aws_data.ipynb
 [12]:https://github.com/s3fs-fuse/s3fs-fuse
 [13]:https://icechunk.io/en/latest/concepts/
-[14]:user_data_notebooks/basic_s3fs_subgrid_plot.ipynb
+[14]:user_data_notebooks/basic_icechunk_access.ipynb
