@@ -51,10 +51,11 @@
 ## Routing Variables
 
 | Variable | Short Name | Units |
-| Streamflow | Streamflowg | m^3 / s |
-| River Depth | RiverDepthg | m |
-| Flooded fraction | FloodedFracg | [-] |
-| Surface water elevation | SurfElevg | m |
-| Surface water storage | SWSg | mm |
+| --- | --- | --- |
+| Streamflow | Streamflow | m^3 / s |
+| River Depth | RiverDepth | m |
+| Flooded fraction | FloodedFrac | [-] |
+| Surface water elevation | SurfElev | m |
+| Surface water storage | SWS | mm |
 
 ## Static Variables
