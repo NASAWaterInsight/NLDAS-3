@@ -17,36 +17,36 @@
 
 | Variable | Short Name | Units |
 | --- | --- | --- |
-| Surface net downward shortwave flux | SWnetg | W/m^2 |
-| Surface net downward longwave flux | LWnetg | W/m^2 |
-| Surface upward latent heat flux | Qleg | W/m^2 |
-| Surface upward sensible heat flux | Qhg | W/m^2 |
-| Downward heat flux in soil | Qgg | W/m^2 |
-| Snowfall rate (frozen) | Snowfg | kg / m^2 / s |
-| Rainfall rate (liquid) | Rainfg | kg / m^2 / s |
-| Total evapotranspiration | Evapg | kg / m^2 / s |
-| Surface runoff amount | Qsg | kg / m^2 / s |
-| Subsurface runoff amount | Qsbg | kg / m^2 / s |
-| Surface temperature | AvgSurfTg | K |
+| Surface net downward shortwave flux | SWnet | W/m^2 |
+| Surface net downward longwave flux | LWnet | W/m^2 |
+| Surface upward latent heat flux | Qle | W/m^2 |
+| Surface upward sensible heat flux | Qh | W/m^2 |
+| Downward heat flux in soil | Qg | W/m^2 |
+| Snowfall rate (frozen) | Snowf | kg / m^2 / s |
+| Rainfall rate (liquid) | Rainf | kg / m^2 / s |
+| Total evapotranspiration | Evap | kg / m^2 / s |
+| Surface runoff amount | Qs | kg / m^2 / s |
+| Subsurface runoff amount | Qsb | kg / m^2 / s |
+| Surface temperature | AvgSurfT | K |
 | Daily minimum surface temperature | AvgSurfT\_min | K |
 | Daily maximum surface temperature | AvgSurfT\_max | K |
-| Liquid water content of surface snow | SWEg | kg / m^2 |
-| Snow depth | SnowDepthg | m |
-| Surface snow area fraction | SnowFracg | [-] |
-| Soil moisture | SoilMoistg | m3 / m^3 |
-| Soil temperature | SoilTempg | K |
-| Potential evapotranspiration | PotEvapg | kg / m^2 / s |
-| Vapor pressure deficit | VPDg | Pa |
-| Vegetation transpiration | TVegg | kg / m^2 / s |
-| Bare soil evaporation | ESoilg | kg / m^2 / s |
-| Total canopy water storage | CanopIntg | kg / m^2 |
-| Water table depth | WaterTableDg | m |
-| Terrestrial water storage | TWSg | mm |
-| Groundwater storage | GWSg | mm |
-| Gross primary productivity | GPPg | g / m^2 / s |
-| Net primary productivity | NPPg | g / m^2 / s |
-| Net ecosystem exchange | NEEg | g / m^2 / s |
-| Leaf area index | LAIg | [-] |
+| Liquid water content of surface snow | SWE | kg / m^2 |
+| Snow depth | SnowDepth | m |
+| Surface snow area fraction | SnowFrac | [-] |
+| Soil moisture | SoilMoist | m3 / m^3 |
+| Soil temperature | SoilTemp | K |
+| Potential evapotranspiration | PotEvap | kg / m^2 / s |
+| Vapor pressure deficit | VPD | Pa |
+| Vegetation transpiration | TVeg | kg / m^2 / s |
+| Bare soil evaporation | ESoil | kg / m^2 / s |
+| Total canopy water storage | CanopInt | kg / m^2 |
+| Water table depth | WaterTableD | m |
+| Terrestrial water storage | TWS | mm |
+| Groundwater storage | GWS | mm |
+| Gross primary productivity | GPP | g / m^2 / s |
+| Net primary productivity | NPP | g / m^2 / s |
+| Net ecosystem exchange | NEE | g / m^2 / s |
+| Leaf area index | LAI | [-] |
 
 ## Routing Variables
 
