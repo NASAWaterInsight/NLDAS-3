@@ -77,7 +77,7 @@ variable) axes.
 
 ### AWS Bucket Contents
 
-The forcing data is available in an AWS s3 bucket under
+The beta forcing data is available in an AWS s3 bucket under
 `s3://nasa-waterinsight/NLDAS3/forcing/`, with subdirectories
 (keys) for multiple temporal resolutions as described below.
 
@@ -115,6 +115,8 @@ This is the access method we recommend for any use case that utilizes
 more than a few files. It enables you to treat the entire period of
 record as a single xarray Dataset object without actually downloading
 any data until you specify a subset and explicitly call `.load()`.
+Subsets can be defined and restricted spatially, temporally, and
+with a list of variable names.
 
 Refer to [this notebook][14] for a demonstration.
 
@@ -122,12 +124,18 @@ Refer to [this notebook][14] for a demonstration.
 
 Due to the large file sizes, it is often convenient to download a
 subset of the data rather than the entire file. The most
-widely-accepted way to do so is to open the file's bucket key using
+widely-recognized way to do so is to open the file's bucket key using
 [s3fs][12], which allows you to treat it like a file stored on your
 local file system. This enables you to take advantage of the
 memory-mapping ability of the HDF/netCDF format.
 
-For a worked example using this approach, see [this notebook][11].
+This method is more succinct than the Icechunk-based virtual zarr
+approach, but each file must be separately opened and treated
+independently.
+
+For a brief worked example using the s3fs approach, see
+[this notebook][11], or reference [this one][15] for a more thorough
+demonstration.
 
 Subsetting files is also theoretically possible with only the netCDF4
 library using http range requests as [described here][10], however
@@ -192,3 +200,4 @@ out the [user feedback form][3].
 [12]:https://github.com/s3fs-fuse/s3fs-fuse
 [13]:https://icechunk.io/en/latest/concepts/
 [14]:user_data_notebooks/basic_icechunk_access.ipynb
+[15]:user_data_notebooks/basic_s3fs_subgrid_plot.ipynb
