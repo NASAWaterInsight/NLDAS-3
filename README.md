@@ -51,6 +51,8 @@ and we will reach out to you with more information.
 
 ## Data Description
 
+![NLDAS-3 chunk layout](/develop/scripts/figures/nldas3_chunk_ints.png)
+
 The NLDAS-3 domain spans 7 to 72 degrees latitude, and -169 to -52
 degrees longitude, which is represented on a 6,500 x 11,700 point
 grid with 26,546,611 valid land points.
