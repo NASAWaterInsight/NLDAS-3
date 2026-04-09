@@ -1,8 +1,11 @@
 import numpy as np
-#import boto3
 import netCDF4 as nc
 import shapely
+import pickle as pkl
 import geopandas as gpd
+import botocore
+import boto3
+from time import perf_counter
 from shapely.strtree import STRtree
 from shapely.wkt import loads
 from pathlib import Path
@@ -81,7 +84,7 @@ def get_poly_raster(latitudes, longitudes, gdb_file:Path, gdb_layer,
         print(f"{perf_counter():.3f} Reading gpd file ")
     lat,lon = latitudes,longitudes
     ## extract the polygons from the gpd file
-    gdf = gpd.read_file(gdb_file, layer=gdb_layer)
+    gdf = gpd.read_file(gdb_file, layer=gdb_layer).to_crs(epsg=4326)
     colkeys = []
     if not gdb_fields is None:
         for k in gdb_fields:
@@ -174,12 +177,13 @@ def get_poly_raster(latitudes, longitudes, gdb_file:Path, gdb_layer,
 if __name__=="__main__":
     data_dir = Path("data")
     gfv1_gdb_path = data_dir.joinpath("nhm/GFv1.1.gdb.zip")
-    gfv1_shp_path = data_dir.joinpath("nhm/gfv1.shp")
     nldas3_path = data_dir.joinpath("nldas3_params.nc")
+    out_pkl_path = data_dir.joinpath("nldas3_gfv1.pkl")
 
     ## download the parameter file if it doesn't exist already
     if not nldas3_path.exists():
-        s3 = boto3.client("s3")
+        boto_cfg = botocore.client.Config(signature_version=botocore.UNSIGNED)
+        s3 = boto3.client("s3", config=boto_cfg)
         s3.download_file(
             "nasa-waterinsight",
             "NLDAS3/static/NLDAS-3_dominant-soil-vegetation.nc",
@@ -195,7 +199,7 @@ if __name__=="__main__":
 
     lats,lons = np.meshgrid(nldas3_lats, nldas3_lons, indexing="ij")
 
-    get_poly_raster(
+    poly_raster,metadata,slcs = get_poly_raster(
         latitudes=lats,
         longitudes=lons,
         gdb_file=gfv1_gdb_path,
@@ -203,9 +207,10 @@ if __name__=="__main__":
         gdb_fields=["nhm_id", "hru_id_nat", "Shape_Length", "Shape_Area"],
         lat_bounds=None,
         lon_bounds=None,
-        return_subgrid_slices=False,
+        return_subgrid_slices=True,
         debug=True
         )
+    pkl.dump((poly_raster, metadata, slcs), out_pkl_path.open("wb"))
 
     exit(0)
     hru_meta,hru_geom = zip(*[(dict(g),g.geometry) for g in hru])
