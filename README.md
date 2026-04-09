@@ -53,7 +53,7 @@ and we will reach out to you with more information.
 <p align="center">
    <img src="scripts/figures/nldas3_chunk_ints.png" width=80%>
 </p>
-![NLDAS-3 chunk layout](/develop/scripts/figures/nldas3_chunk_ints.png)
+<p align="center">NLDAS-3 Land Mask and Chunk Layout</p>
 
 The NLDAS-3 domain spans 7 to 72 degrees latitude, and -169 to -52
 degrees longitude, which is represented on a 6,500 x 11,700 point
