@@ -50,10 +50,13 @@ data, please fill out the [NLDAS-3 Data Testing Request Form][2],
 and we will reach out to you with more information.
 
 ## Data Description
+
 <p align="center">
    <img src="scripts/figures/nldas3_chunk_ints.png" width=80%>
 </p>
 <p align="center">NLDAS-3 Land Mask and Chunk Layout</p>
+
+### Domain
 
 The NLDAS-3 domain spans 7 to 72 degrees latitude, and -169 to -52
 degrees longitude, which is represented on a 6,500 x 11,700 point
@@ -72,10 +75,30 @@ Precipitation, however, provides the total accumulation over the
 relevant UTC time period. Daily data also includes the minimum and
 maximum values 2-meter temperature for that day.
 
-In order to support efficient access for multiple use cases, forcing
-data are chunked into memory-adjacent blocks with shape
-(6, 500, 900, 1) with respect to the (time, latitude, longitude,
-variable) axes.
+### Chunking
+
+In order to support efficient access for multiple use cases,
+forcing data are chunked into memory-adjacent blocks with shape
+(6, 500, 900, 1) for hourly data, and (1, 500, 900, 1) for daily
+data with respect to the (time, latitude, longitude, variable) axes.
+
+Whether reading a downloaded file from disc or online with s3fs
+or Icechunk, a full chunk will be loaded any time a pixel inside it
+is accessed. As such, structuring your data pipelines to minimize
+the number of chunks accessed at a time (and maximize the usage of
+loaded chunks) is one of the primary considerations for efficiency.
+
+We provide auxiliary data files containing the geographic polygons
+and index slices with respect to the NLDAS-3 domain at the links
+below. The files also contain metadata associated with each chunk
+indicating whether it contains any valid land points.
+
+The npz file below also contains a raster mapping each valid land
+point in the NLDAS-3 domain to the integer index of its chunk polygon.
+
+- [scripts/data/nldas3_chunks.gdb.zip](scripts/data/nldas3_chunks.gdb.zip) (12.3 KB)
+- [scripts/data/nldas3_chunks.geojson](scripts/data/nldas3_chunks.geojson) (36 KB)
+- [scripts/data/nldas3_chunks.npz](scripts/data/nldas3_chunks.npz) (378 KB)
 
 ## Data Access
 
