@@ -148,29 +148,15 @@ def get_chunk_polygons(latitudes:np.array, longitudes:np.array,
         np.meshgrid(slc_lat_f-1, slc_lon_f-1, indexing="ij"),
         axis=0,
         ).reshape(2,-1)
+    ## indeces of chunks' 2d layout (in terms of chunks not pixels)
     cixs = np.stack(
-        np.meshgrid(np.arange(nlats), np.arange(nlons), indexing="ij"),
-        axis=0
+        np.meshgrid(
+            np.arange(slc_lat_0.shape[0]),
+            np.arange(slc_lon_0.shape[0]),
+            indexing="ij",
+            ),
+        axis=0,
         ).reshape(2,-1)
-
-    ## Exclude chunks with no valid land points
-    valid_slices,invalid_slice_ixs = [],[]
-    valid_chunk_ixy,valid_chunk_ixx = [],[]
-    for i in range(slc_0.shape[-1]):
-        tmp_slc = (slice(slc_0[0,i], slc_f[0,i]+1),
-            slice(slc_0[1,i], slc_f[1,i]+1))
-        if valid_mask is None or np.any(valid_mask[*tmp_slc]):
-            valid_slices.append(tmp_slc)
-            valid_chunk_ixy.append(cixs[0,i])
-            valid_chunk_ixx.append(cixs[1,i])
-        else:
-            if return_invalid_polygons:
-                valid_slices.append(tmp_slc)
-                valid_chunk_ixy.append(cixs[0,i])
-                valid_chunk_ixx.append(cixs[1,i])
-            invalid_slice_ixs.append(i)
-    slc_0 = np.delete(slc_0, invalid_slice_ixs, axis=1)
-    slc_f = np.delete(slc_f, invalid_slice_ixs, axis=1)
 
     ## get the latlon indeces of the outer extremes of each chunk polygon
     lat_0 = np.round(latitudes[slc_0[0]] - pixel_resolution[0] / 2, 5)
@@ -178,24 +164,41 @@ def get_chunk_polygons(latitudes:np.array, longitudes:np.array,
     lon_0 = np.round(longitudes[slc_0[1]] - pixel_resolution[1] / 2, 5)
     lon_f = np.round(longitudes[slc_f[1]] + pixel_resolution[1] / 2, 5)
 
-    ## make shapely Polygon objects for each chunk polygon
-    chunk_polys = [
-        shapely.geometry.Polygon([
+    ## if a mask is provided and the user doesn't want polygons with no valid
+    ## points, restrict the returned slices & polys.
+    has_valid_land_points = []
+    chunk_ixy,chunk_ixx = [],[]
+    chunk_meta = []
+    chunk_polys = []
+    for i in range(slc_0.shape[-1]):
+        has_valid_points = True
+        tmp_slc = (slice(slc_0[0,i], slc_f[0,i]+1),
+            slice(slc_0[1,i], slc_f[1,i]+1))
+        ## if mask is provided and there are no valid points in this chunk,
+        ## either skip it or note as such in the metadata, depending on user
+        if not valid_mask is None and not np.any(valid_mask[*tmp_slc]):
+            if return_invalid_polygons:
+                has_valid_points = False
+            else:
+                continue
+
+        ## make a shapely polygon for this chunk
+        tmp_poly = shapely.geometry.Polygon([
             (lon_0[i], lat_0[i]), (lon_f[i], lat_0[i]),
             (lon_f[i], lat_f[i]), (lon_0[i], lat_f[i]),
             ])
-        for i in range(lat_0.shape[-1])
-        ]
-    chunk_meta = [{
-        "has_land_points":True if not return_invalid_polygons \
-            else not i in invalid_slice_ixs,
-        "lat_slice_start":int(slat.start),
-        "lat_slice_stop":int(slat.stop),
-        "lon_slice_start":int(slon.start),
-        "lon_slice_stop":int(slon.stop),
-        "lat_chunk_ix":valid_chunk_ixy[i],
-        "lon_chunk_ix":valid_chunk_ixx[i],
-        } for i,(slat,slon) in enumerate(valid_slices)]
+        chunk_polys.append(tmp_poly)
+
+        ## collect metadata
+        chunk_meta.append({
+            "has_valid_points":has_valid_points,
+            "lat_slice_start":tmp_slc[0].start,
+            "lat_slice_stop":tmp_slc[0].stop,
+            "lon_slice_start":tmp_slc[1].start,
+            "lon_slice_stop":tmp_slc[1].stop,
+            "lat_chunk_ix":cixs[0,i],
+            "lon_chunk_ix":cixs[1,i],
+            })
 
     return chunk_polys,chunk_meta
 
@@ -203,13 +206,16 @@ if __name__=="__main__":
     data_dir = Path("data")
 
     nldas3_path = data_dir.joinpath("nldas3_params.nc")
-    out_gdb_dir = data_dir.joinpath("nldas3_chunks.gdb")
-    out_geojson_path = data_dir.joinpath("nldas3_chunks.geojson")
-    out_npz_path = data_dir.joinpath("nldas3_chunks.npz")
+    #out_gdb_dir = data_dir.joinpath("nldas3_chunks_land.gdb")
+    #out_geojson_path = data_dir.joinpath("nldas3_chunks_land.geojson")
+    #out_npz_path = data_dir.joinpath("nldas3_chunks_land.npz")
+    out_gdb_dir = data_dir.joinpath("nldas3_chunks_all.gdb")
+    out_geojson_path = data_dir.joinpath("nldas3_chunks_all.geojson")
+    out_npz_path = data_dir.joinpath("nldas3_chunks_all.npz")
 
     nldas3_chunk_shape = (500, 900) ## pixels (lat, lon)
     nldas3_px_res = (.01,.01) ## degrees (lat, lon)
-    return_invalid_polygons = True
+    return_invalid_polygons = False
     overwrite_gdb = True
     overwrite_geojson = True
     overwrite_npz = True

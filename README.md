@@ -52,7 +52,7 @@ and we will reach out to you with more information.
 ## Data Description
 
 <p align="center">
-   <img src="scripts/figures/nldas3_chunk_ints.png" width=80%>
+   <img src="scripts/figures/nldas3_chunk_ints_all.png" width=80%>
 </p>
 <p align="center">NLDAS-3 Land Mask and Chunk Layout</p>
 
@@ -96,9 +96,9 @@ indicating whether it contains any valid land points.
 The npz file below also contains a raster mapping each valid land
 point in the NLDAS-3 domain to the integer index of its chunk polygon.
 
-- [scripts/data/nldas3_chunks.gdb.zip](scripts/data/nldas3_chunks.gdb.zip) (12.3 KB)
-- [scripts/data/nldas3_chunks.geojson](scripts/data/nldas3_chunks.geojson) (36 KB)
-- [scripts/data/nldas3_chunks.npz](scripts/data/nldas3_chunks.npz) (378 KB)
+- [scripts/data/nldas3_chunks.gdb.zip](scripts/data/nldas3_chunks_all.gdb.zip) (13 KB)
+- [scripts/data/nldas3_chunks.geojson](scripts/data/nldas3_chunks_all.geojson) (37 KB)
+- [scripts/data/nldas3_chunks.npz](scripts/data/nldas3_chunks_all.npz) (379 KB)
 
 ## Data Access
 

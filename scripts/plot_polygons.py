@@ -166,10 +166,16 @@ def plot_geo_ints(int_data, lat, lon, shapes=None,
 if __name__=="__main__":
     data_dir = Path("data")
     fig_dir = Path("figures")
-    out_npz_path = data_dir.joinpath("nldas3_chunks.npz")
+
     nldas3_path = data_dir.joinpath("nldas3_params.nc")
-    out_path_polys = fig_dir.joinpath("nldas3_chunk_polys.png")
-    out_path_ints = fig_dir.joinpath("nldas3_chunk_ints.png")
+
+    out_npz_path = data_dir.joinpath("nldas3_chunks_all.npz")
+    out_path_polys = fig_dir.joinpath("nldas3_chunk_polys_all.png")
+    out_path_ints = fig_dir.joinpath("nldas3_chunk_ints_all.png")
+
+    #out_npz_path = data_dir.joinpath("nldas3_chunks_land.npz")
+    #out_path_polys = fig_dir.joinpath("nldas3_chunk_polys_land.png")
+    #out_path_ints = fig_dir.joinpath("nldas3_chunk_ints_land.png")
 
     ## chunk polygon plotting settings
     plot_polys = True
@@ -206,7 +212,7 @@ if __name__=="__main__":
         cpolys = [Polygon(cd["geometry"][0]) for cd in cinfo]
         cmap = plt.get_cmap(cmap_polys)
         colors = [
-            oob_color if not c["has_land_points"] else cmap(i/(len(cinfo)-1))
+            oob_color if not c["has_valid_points"] else cmap(i/(len(cinfo)-1))
             for i,c in enumerate(cinfo)
             ]
 
