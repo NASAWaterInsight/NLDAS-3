@@ -203,7 +203,7 @@ if __name__=="__main__":
     #out_adj_npz_path = data_dir.joinpath("adjacency_gfv1_nldas3_land.npz")
 
     ## re-extract gfv1 raster on nldas3 domain if True
-    get_new_poly_raster = False
+    get_new_poly_raster = True
 
     """ -----( end normal configuration )----- """
 
