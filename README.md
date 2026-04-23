@@ -205,7 +205,7 @@ via the repo at `virtual-zarr-store/NLDAS-3-icechunk`. This approach
 isn't affected by the off-by-one error described under the Kerchunk
 section, and may be slightly more efficient.
 
-```
+```python
 import icechunk
 import xarray as xr
 
