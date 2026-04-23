@@ -132,22 +132,113 @@ which contains land mask, surface class, soil texture, surface
 geometry, catchment ID, and other time-invariant parameters relevant
 for land surface and routing model calculations.
 
-### Multi-file Virtual Zarr Access
+### Multi-file Subset (Virtual Zarr)
 
 In order to more easily index across files and to minimize the total
-number of requests needed to retrieve data, we provide a virtual
-[Icechunk repo][13] for daily data (and hourly data soon).
+number of requests needed to retrieve data, we provide virtual zarr
+access methods that use [Kerchunk][16] and [Icechunk][13].
 
-This is the access method we recommend for any use case that utilizes
-more than a few files. It enables you to treat the entire period of
-record as a single xarray Dataset object without actually downloading
-any data until you specify a subset and explicitly call `.load()`.
-Subsets can be defined and restricted spatially, temporally, and
-with a list of variable names.
+These approaches enable you to load the metadata needed to declare an
+`xarray.Dataset` object that *looks* like it contains the entire
+period of record, but which downloads the data itself lazily once
+you have defined a subset at called the `load()` method.
 
-Refer to [this notebook][14] for a demonstration.
+Using a virtual zarr method rather than s3fs or direct downloading
+minimizes the number of metadata requests needed to acquire data
+from multiple files, and implicitly handles concatenation logic along
+the time dimension.
 
-### Access File Subset (s3fs)
+In both cases, full netCDF chunks are still downloaded under the hood
+when `.load()` is called, so consider organizing requests to minimize
+the number of chunks intersecting the subsets you define to prevent
+redundant downloads.
+
+Under the hood, the virtual references stored in the kerchunk
+parquet or icechunk repo directories map zarr-like chunk IDs to
+a URL, byte offset, and byte length of each netCDF chunk. That way,
+the difference between individual files are abstracted away by
+a shared collection of metadata.
+
+#### Kerchunk (daily and hourly data)
+
+We support kerchunk virutal zarr access for both hourly and daily
+data via the parquet directories at
+`s3://nasa-waterinsight/virtual/nldas3_daily.parq` and
+`s3://nasa-waterinsight/virtual/nldas3_hourly.parq`, respectively,
+as demonstrated below.
+
+**BEWARE**: the time dimension for daily kerchunk data is
+fictitiously offset by one day, so Jan 1, 2012 appears as Jan 2, 2012
+in the virtual Dataset object. This issue does not affect the hourly
+kerchunk data or the daily icechunk method, and will be resolved in
+subsequent versions of the forcing data.
+
+```python
+import fsspec
+import xarray as xr
+
+## set up a virtual file system using the kerchunk references
+ref_fs = fsspec.filesystem(
+    "reference",
+    fo="s3://nasa-waterinsight/virtual/nldas3_hourly.parq",
+    remote_protocol="s3",
+    asynchronous=True,
+    remote_options={"asynchronous":True},
+    lazy=True
+    )
+
+## create a xarray Dataset object based on the virtual chunks.
+ds = xr.open_zarr(
+        ref_fs.get_mapper(""),
+        consolidated=False,
+        decode_times=True,
+        )
+```
+
+For a more complete demonstration including a method for creating
+hourly animations, see [this script][17].
+
+#### Icechunk (daily data only)
+
+Currently, only daily data is accessible using the icechunk method
+via the repo at `virtual-zarr-store/NLDAS-3-icechunk`. This approach
+isn't affected by the off-by-one error described under the Kerchunk
+section, and may be slightly more efficient.
+
+```
+import icechunk
+import xarray as xr
+
+## List endpoints where virtual chunks are stored. This is a security
+## step to make sure you don't acquire data from an unknown source.
+authorized_urls = [
+    "s3://nasa-waterinsight/NLDAS3/forcing/daily/",
+    ]
+
+## Set up credentials for accessing the s3 bucket and open connection
+repo = icechunk.Repository.open(
+    icechunk.s3_storage(
+        bucket="nasa-waterinsight",
+        prefix="virtual-zarr-store/NLDAS-3-icechunk",
+        region="us-west-2",
+        anonymous=True,
+        ),
+    authorize_virtual_chunk_access=icechunk.containers_credentials({
+        u:icechunk.s3_credentials(anonymous=True)
+        for u in authorized_urls
+        })
+    )
+ses = repo.readonly_session("main")
+
+## acquire metadata by opening the session as a virtual zarr file
+ds = xr.open_zarr(ses.store, consolidated=False)
+```
+
+The code block above demonstrates how to declare a virtual xarray
+Dataset using the icechunk references. For a fleshed-out example
+of how to select and download a subset, refer to [this notebook][14].
+
+### Single File Subset (s3fs)
 
 Due to the large file sizes, it is often convenient to download a
 subset of the data rather than the entire file. The most
@@ -156,9 +247,25 @@ widely-recognized way to do so is to open the file's bucket key using
 local file system. This enables you to take advantage of the
 memory-mapping ability of the HDF/netCDF format.
 
-This method is more succinct than the Icechunk-based virtual zarr
-approach, but each file must be separately opened and treated
-independently.
+This method is more succinct than the virtual zarr approach, but
+each file must be separately opened and treated independently.
+
+The code block below shows the basic pattern for accessing a file
+this way. You will need to install the h5netcdf engine in addition
+to s3fs and xarray.
+
+```python
+import s3fs
+import xarray as xr
+
+s3 = s3fs.S3FileSystem()
+
+file_url = "nasa-waterinsight/NLDAS3/forcing/hourly/"
+file_url += "201407/NLDAS_FOR0010_H.A20140722.030.beta.nc"
+with s3.open(file_url) as ncfile:
+    ds = xr.open_dataset(ncfile, engine="h5netcdf")
+    ## (xarray subset and download logic here)
+```
 
 For a brief worked example using the s3fs approach, see
 [this notebook][11], or reference [this one][15] for a more thorough
@@ -168,7 +275,7 @@ Subsetting files is also theoretically possible with only the netCDF4
 library using http range requests as [described here][10], however
 this method has not been thoroughly tested by our team.
 
-### Download Full File (AWS CLI / boto)
+### Full File Download (AWS CLI / boto)
 
 If you just want to download an entire data file to your machine, the
 most straightforward way to do so is by installing the [AWS CLI][9].
@@ -228,3 +335,5 @@ out the [user feedback form][3].
 [13]:https://icechunk.io/en/latest/concepts/
 [14]:user_data_notebooks/basic_icechunk_access.ipynb
 [15]:user_data_notebooks/basic_s3fs_subgrid_plot.ipynb
+[16]:https://fsspec.github.io/kerchunk/
+[17]:scripts/read_nldas3_kerchunk_from_refs.py
