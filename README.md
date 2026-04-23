@@ -148,10 +148,10 @@ minimizes the number of metadata requests needed to acquire data
 from multiple files, and implicitly handles concatenation logic along
 the time dimension.
 
-In both cases, full netCDF chunks are still downloaded under the hood
-when `.load()` is called, so consider organizing requests to minimize
-the number of chunks intersecting the subsets you define to prevent
-redundant downloads.
+In both cases, full netCDF chunks are still downloaded when `.load()`
+is called, so consider organizing requests to minimize the number of
+chunks intersecting the subsets you define to prevent redundant
+downloads.
 
 Under the hood, the virtual references stored in the kerchunk
 parquet or icechunk repo directories map zarr-like chunk IDs to
