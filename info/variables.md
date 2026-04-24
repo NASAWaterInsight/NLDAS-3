@@ -52,7 +52,7 @@
 
 | Variable | Short Name | Units |
 | --- | --- | --- |
-| Streamflow | Streamflow | m^3 s<sup>-1</sup> |
+| Streamflow | Streamflow | m<sup>3</sup> s<sup>-1</sup> |
 | River Depth | RiverDepth | m |
 | Flooded fraction | FloodedFrac | [-] |
 | Surface water elevation | SurfElev | m |
