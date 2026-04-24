@@ -96,7 +96,6 @@ indicating whether it contains any valid land points.
 The npz file below also contains a raster mapping each valid land
 point in the NLDAS-3 domain to the integer index of its chunk polygon.
 
-- [scripts/data/nldas3_chunks.gdb.zip](scripts/data/nldas3_chunks_all.gdb.zip) (13 KB)
 - [scripts/data/nldas3_chunks.geojson](scripts/data/nldas3_chunks_all.geojson) (37 KB)
 - [scripts/data/nldas3_chunks.npz](scripts/data/nldas3_chunks_all.npz) (379 KB)
 
