@@ -1,11 +1,12 @@
 # How to Request Login Access to NASA Water Insight Open Science Studio (Jupyter Hub)
 
-## 1. Request Access  
-Email David Mocko (david.mocko@nasa.gov) or Sid Chaudhary (siddharth.chaudhary@nasa.gov) 
+## 1. Request Access
 
-Fill out the following Google form on your use case: [NLDAS-3 Data Testing Request Form](https://docs.google.com/forms/d/e/1FAIpQLScCCr5yxm0K8JsB8tnUwiRhxOCDXoeSry9hWqe0nYZYIzSv1g/viewform). 
+Email Mitchell Dodson (mitchell.t.dodson@nasa.gov) or David Mocko (david.mocko@nasa.gov)
 
-You should hear back in a week about account access.
+Fill out the following Google form on your use case: [NLDAS-3 Data Testing Request Form](https://docs.google.com/forms/d/e/1FAIpQLScCCr5yxm0K8JsB8tnUwiRhxOCDXoeSry9hWqe0nYZYIzSv1g/viewform).
+
+You should hear back within a week about account access.
 
 ## 2. Login to the Jupyter Hub
 Login to the NASA Water Insight Open Science Studio (Jupyter Hub): https://oss.waterinsight.smce.nasa.gov/
@@ -43,3 +44,4 @@ Thanks for your time and sharing your ideas!
 
 
 ##### Now, you're all set to access WaterInsight Open Science Studio (Jupyter Hub) and start your analysis!
+
