@@ -161,16 +161,14 @@ a shared collection of metadata.
 #### Kerchunk (daily and hourly data)
 
 We support kerchunk virutal zarr access for both hourly and daily
-data via the parquet directories at
-`s3://nasa-waterinsight/virtual/nldas3_daily.parq` and
-`s3://nasa-waterinsight/virtual/nldas3_hourly.parq`, respectively,
-as demonstrated below.
+data via the following parquet directories:
 
-**BEWARE**: the time dimension for daily kerchunk data is
-fictitiously offset by one day, so Jan 1, 2012 appears as Jan 2, 2012
-in the virtual Dataset object. This issue does not affect the hourly
-kerchunk data or the daily icechunk method, and will be resolved in
-subsequent versions of the forcing data.
+- `s3://nasa-waterinsight/virtual/nldas3_daily.parq`
+- `s3://nasa-waterinsight/virtual/nldas3_hourly.parq`
+
+The code block below shows the basic pattern for declaring a virtual
+dataset. For a more complete demonstration including a method for
+creating hourly animations, see [this script][17].
 
 ```python
 import fsspec
@@ -194,15 +192,13 @@ ds = xr.open_zarr(
         )
 ```
 
-For a more complete demonstration including a method for creating
-hourly animations, see [this script][17].
-
 #### Icechunk (daily data only)
 
 Currently, only daily data is accessible using the icechunk method
-via the repo at `virtual-zarr-store/NLDAS-3-icechunk`. This approach
-isn't affected by the off-by-one error described under the Kerchunk
-section, and may be slightly more efficient.
+via the repo at `virtual-zarr-store/NLDAS-3-icechunk`. After
+declaring the virtual dataset this method is practically the same
+as the kerchunk approach, but may be slightly more efficient for
+some access patterns.
 
 ```python
 import icechunk
