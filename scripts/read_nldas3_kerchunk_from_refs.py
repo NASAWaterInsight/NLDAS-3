@@ -92,6 +92,7 @@ def animate_geo_raster(data, lats, lons, times=None, plot_spec={}):
     return ani
 
 if __name__=="__main__":
+    repo_root = Path("/Users/mtdodson/Desktop/projects/NLDAS-3")
     ## hurricane sandy landfall in maryland
     time_slice = slice("2012-10-28", "2012-10-30")
     lon_slice = slice(-78.5,-73.5)
@@ -102,8 +103,8 @@ if __name__=="__main__":
     animate = True
     animation_dpi = 80
 
-    buffer_npz_path = Path("test_nldas3_hourly.npz")
-    out_animation_path = Path("test_nldas3_hourly.gif")
+    buffer_npz_path = repo_root.joinpath("tmp/data/test_nldas3_hourly.npz")
+    out_animation_path = repo_root.joinpath("tmp/figures/test_nldas3_hourly.gif")
 
     if download_new:
         ## Set up a reference file system based on the chunk refs stored in
