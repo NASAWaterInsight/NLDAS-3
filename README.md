@@ -180,17 +180,17 @@ ref_fs = fsspec.filesystem(
     fo="s3://nasa-waterinsight/virtual/nldas3_hourly.parq",
     remote_protocol="s3",
     asynchronous=True,
-    remote_options={"asynchronous":True},
-    lazy=True
+    remote_options={"asynchronous":True, "anon":True},
+    target_options={"anon":True},
+    lazy=True,
     )
 
 ## create a xarray Dataset object based on the virtual chunks.
-ds = xr.open_zarr(
-        ref_fs.get_mapper(""),
-        consolidated=False,
-        decode_times=True,
-        )
+ds = xr.open_zarr(ref_fs.get_mapper(""), consolidated=False)
 ```
+
+In addition to `fsspec` and `xarray`, you will need to install
+`fastparquet` in order for the above code block to function.
 
 #### Icechunk (daily data only)
 
