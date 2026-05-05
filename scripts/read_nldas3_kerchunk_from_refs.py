@@ -119,7 +119,8 @@ if __name__=="__main__":
             fo="s3://nasa-waterinsight/virtual/nldas3_hourly.parq",
             remote_protocol="s3",
             asynchronous=True,
-            remote_options={"asynchronous":True},
+            remote_options={"asynchronous":True, "anon":True},
+            target_options={"anon":True},
             lazy=True
             )
 
