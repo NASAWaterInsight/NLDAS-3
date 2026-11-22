@@ -9,8 +9,10 @@ jobs:
     steps:
       - name: Extract Issue Data
         id: extract
+        env:
+          ISSUE_BODY_FROM_EVENT: ${{ github.event.issue.body }}
         run: |
-          ISSUE_BODY="${{ github.event.issue.body }}"
+          ISSUE_BODY="$ISSUE_BODY_FROM_EVENT"
           NAME=$(echo "$ISSUE_BODY" | grep -oP '(?<=\*\*Full Name\*\*\s*).*')
           EMAIL=$(echo "$ISSUE_BODY" | grep -oP '(?<=\*\*Email ID\*\*\s*).*')
           USE_CASE=$(echo "$ISSUE_BODY" | grep -oP '(?<=\*\*Use Case\*\*\s*).*')
